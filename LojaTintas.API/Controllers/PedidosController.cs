@@ -13,10 +13,12 @@ namespace LojaTintas.API.Controllers;
 public class PedidosController : ControllerBase
 {
     private readonly IPedidoService _pedidoService;
+    private readonly ILogger<PedidosController> _logger;
 
-    public PedidosController(IPedidoService pedidoService)
+    public PedidosController(IPedidoService pedidoService, ILogger<PedidosController> logger)
     {
         _pedidoService = pedidoService;
+        _logger = logger;
     }
 
     /// <summary>Lista todos os pedidos (sem itens — use a busca por id para o detalhe).</summary>
@@ -44,7 +46,16 @@ public class PedidosController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Criar([FromBody] PedidoRequestDto dto)
     {
+        _logger.LogInformation(
+            "Iniciando criação de pedido. ClienteId={ClienteId} QuantidadeItens={QuantidadeItens} TraceId={TraceId}",
+            dto.ClienteId, dto.Itens.Count, HttpContext.TraceIdentifier);
+
         var pedido = await _pedidoService.CriarPedidoAsync(dto);
+
+        _logger.LogInformation(
+            "Pedido criado com sucesso. PedidoId={PedidoId} NumeroPedido={NumeroPedido} ValorTotal={ValorTotal} TraceId={TraceId}",
+            pedido.Id, pedido.NumeroPedido, pedido.ValorTotal, HttpContext.TraceIdentifier);
+
         return CreatedAtAction(nameof(ObterPorId), new { id = pedido.Id }, pedido);
     }
 }

@@ -4,4 +4,6 @@
   <Project Path="LojaTintas.Domain/LojaTintas.Domain.csproj" />
   <Project Path="LojaTintas.Infrastructure/LojaTintas.Infrastructure.csproj" />
   <Project Path="LojaTintas.Tests/LojaTintas.Tests.csproj" />
+  <Project Path="LojaTintas.Domain.Tests/LojaTintas.Domain.Tests.csproj" />
+  <Project Path="LojaTintas.Application.Tests/LojaTintas.Application.Tests.csproj" />
 </Solution>

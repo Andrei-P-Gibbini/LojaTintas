@@ -43,17 +43,9 @@ public class PedidoService : IPedidoService
             var produto = await _produtoRepository.ObterPorIdAsync(itemDto.ProdutoId)
                 ?? throw new ResourceNotFoundException(nameof(Produto), itemDto.ProdutoId);
 
-            pedido.Itens.Add(new ItemPedido
-            {
-                ProdutoId = produto.Id,
-                Quantidade = itemDto.Quantidade,
-                PrecoUnitario = produto.PrecoVenda,
-                DescontoPercentual = itemDto.DescontoPercentual
-            });
+            // Regra de negócio (invariantes de quantidade/desconto e cálculo do total) vive no Domain.
+            pedido.AdicionarItem(produto, itemDto.Quantidade, itemDto.DescontoPercentual);
         }
-
-        pedido.ValorTotal = pedido.Itens.Sum(i =>
-            Math.Round(i.Quantidade * i.PrecoUnitario * (1 - i.DescontoPercentual / 100), 2));
 
         await _pedidoRepository.AdicionarAsync(pedido);
 

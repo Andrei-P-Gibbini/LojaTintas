@@ -1,10 +1,13 @@
 using LojaTintas.API.Exceptions;
 using LojaTintas.API.Extensions;
+using LojaTintas.API.HealthChecks;
 using LojaTintas.Application.Interfaces.Repositories;
 using LojaTintas.Application.Services;
 using LojaTintas.Infrastructure.Data;
 using LojaTintas.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -32,6 +35,9 @@ builder.Services.AddLojaTintasSwagger();
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 
+// Health checks (CP4)
+builder.Services.AddLojaTintasHealthChecks();
+
 var app = builder.Build();
 
 // Registrado antes de MapControllers e do Swagger, conforme exigido pelo CP3.
@@ -53,8 +59,17 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.MapControllers();
 
-app.MapGet("/health", () => Results.Ok(new { status = "healthy", timestamp = DateTime.UtcNow }))
-   .WithName("HealthCheck")
-   .WithTags("Health");
+// Único endpoint de health check (CP4), com relatório completo em JSON e status HTTP
+// alinhado ao runtime: Healthy/Degraded → 200, Unhealthy → 503.
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    ResponseWriter = HealthCheckResponseWriter.WriteAsync,
+    ResultStatusCodes =
+    {
+        [HealthStatus.Healthy] = StatusCodes.Status200OK,
+        [HealthStatus.Degraded] = StatusCodes.Status200OK,
+        [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
+    }
+});
 
 app.Run();
