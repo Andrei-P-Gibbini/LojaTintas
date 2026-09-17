@@ -1,0 +1,55 @@
+@LojaTintas.API_HostAddress = http://localhost:5169
+
+### Health check
+GET {{LojaTintas.API_HostAddress}}/health
+Accept: application/json
+
+### Listar categorias
+GET {{LojaTintas.API_HostAddress}}/api/categorias
+Accept: application/json
+
+### Criar categoria
+POST {{LojaTintas.API_HostAddress}}/api/categorias
+Content-Type: application/json
+
+{
+  "nome": "Tintas Látex",
+  "descricao": "Tintas à base de água para paredes internas e externas"
+}
+
+### Buscar categoria inexistente (testa ProblemDetails 404)
+GET {{LojaTintas.API_HostAddress}}/api/categorias/9999
+Accept: application/json
+
+### Listar produtos
+GET {{LojaTintas.API_HostAddress}}/api/produtos
+Accept: application/json
+
+### Listar clientes
+GET {{LojaTintas.API_HostAddress}}/api/clientes
+Accept: application/json
+
+### Criar cliente
+POST {{LojaTintas.API_HostAddress}}/api/clientes
+Content-Type: application/json
+
+{
+  "nome": "João da Silva",
+  "cpfCnpj": "12345678900",
+  "email": "joao.silva@example.com",
+  "telefone": "11999999999",
+  "endereco": "Rua das Tintas, 100"
+}
+
+### Listar pedidos
+GET {{LojaTintas.API_HostAddress}}/api/pedidos
+Accept: application/json
+
+### Criar pedido (payload inválido de propósito, testa ProblemDetails 400)
+POST {{LojaTintas.API_HostAddress}}/api/pedidos
+Content-Type: application/json
+
+{
+  "clienteId": "00000000-0000-0000-0000-000000000000",
+  "itens": []
+}

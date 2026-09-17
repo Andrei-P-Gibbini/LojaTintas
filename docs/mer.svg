@@ -1,0 +1,173 @@
+<svg width="680" height="980" viewBox="0 0 680 980" xmlns="http://www.w3.org/2000/svg" role="img">
+<title>Diagrama MER — Loja de Tintas</title>
+<desc>Modelo Entidade-Relacionamento com 9 entidades</desc>
+<style>
+  text { font-family: Arial, sans-serif; fill: #1a1a1a; }
+  .th { font-size: 14px; font-weight: 600; fill: #fff; }
+  .ts { font-size: 11px; fill: #333; }
+  .box-teal-h { fill: #0F6E56; }
+  .box-teal   { fill: #E1F5EE; stroke: #0F6E56; stroke-width: 0.5; }
+  .box-purple-h{ fill: #534AB7; }
+  .box-purple { fill: #EEEDFE; stroke: #534AB7; stroke-width: 0.5; }
+  .box-amber-h{ fill: #854F0B; }
+  .box-amber  { fill: #FAEEDA; stroke: #854F0B; stroke-width: 0.5; }
+  .box-coral-h{ fill: #993C1D; }
+  .box-coral  { fill: #FAECE7; stroke: #993C1D; stroke-width: 0.5; }
+  .box-blue-h { fill: #185FA5; }
+  .box-blue   { fill: #E6F1FB; stroke: #185FA5; stroke-width: 0.5; }
+  .rel-line   { stroke: #888; stroke-width: 1; fill: none; }
+  .rel-dash   { stroke: #888; stroke-width: 1; fill: none; stroke-dasharray: 4 3; }
+  .legend-box { fill: none; stroke: #aaa; stroke-width: 0.5; stroke-dasharray: 4 3; }
+</style>
+<defs>
+  <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+    <path d="M2 1L8 5L2 9" fill="none" stroke="#888" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </marker>
+</defs>
+
+<!-- CATEGORIA -->
+<rect class="box-teal" x="30" y="30" width="180" height="130" rx="8"/>
+<rect class="box-teal-h" x="30" y="30" width="180" height="28" rx="8"/>
+<rect x="30" y="44" width="180" height="14" fill="#0F6E56"/>
+<text class="th" x="120" y="50" text-anchor="middle" dominant-baseline="central">Categoria</text>
+<text class="ts" x="44" y="74">🔑 Id (int, PK)</text>
+<text class="ts" x="44" y="92">Nome (string, obrigatório)</text>
+<text class="ts" x="44" y="110">Descricao (string, opcional)</text>
+
+<!-- FABRICANTE -->
+<rect class="box-teal" x="470" y="30" width="180" height="146" rx="8"/>
+<rect class="box-teal-h" x="470" y="30" width="180" height="28" rx="8"/>
+<rect x="470" y="44" width="180" height="14" fill="#0F6E56"/>
+<text class="th" x="560" y="50" text-anchor="middle" dominant-baseline="central">Fabricante</text>
+<text class="ts" x="484" y="74">🔑 Id (int, PK)</text>
+<text class="ts" x="484" y="92">Nome (string, obrigatório)</text>
+<text class="ts" x="484" y="110">Cnpj (string, único)</text>
+<text class="ts" x="484" y="128">PaisOrigem (string, opcional)</text>
+<text class="ts" x="484" y="146">Website (string, opcional)</text>
+
+<!-- PRODUTO -->
+<rect class="box-purple" x="220" y="260" width="240" height="210" rx="8"/>
+<rect class="box-purple-h" x="220" y="260" width="240" height="28" rx="8"/>
+<rect x="220" y="274" width="240" height="14" fill="#534AB7"/>
+<text class="th" x="340" y="280" text-anchor="middle" dominant-baseline="central">Produto</text>
+<text class="ts" x="234" y="304">🔑 Id (Guid, PK)</text>
+<text class="ts" x="234" y="322">Nome (string, obrigatório)</text>
+<text class="ts" x="234" y="340">CodigoSku (string, único)</text>
+<text class="ts" x="234" y="358">PrecoVenda (decimal)</text>
+<text class="ts" x="234" y="376">VolumeLitros (decimal)</text>
+<text class="ts" x="234" y="394">TipoTinta (enum)</text>
+<text class="ts" x="234" y="412">CorBase (string, opcional)</text>
+<text class="ts" x="234" y="430">FK CategoriaId · FK FabricanteId</text>
+
+<!-- ESTOQUE -->
+<rect class="box-amber" x="490" y="278" width="170" height="148" rx="8"/>
+<rect class="box-amber-h" x="490" y="278" width="170" height="28" rx="8"/>
+<rect x="490" y="292" width="170" height="14" fill="#854F0B"/>
+<text class="th" x="575" y="298" text-anchor="middle" dominant-baseline="central">Estoque</text>
+<text class="ts" x="504" y="322">🔑 Id (int, PK)</text>
+<text class="ts" x="504" y="340">QuantidadeAtual (int)</text>
+<text class="ts" x="504" y="358">QuantidadeMinima (int)</text>
+<text class="ts" x="504" y="376">Localizacao (string)</text>
+<text class="ts" x="504" y="394">FK ProdutoId (único)</text>
+
+<!-- FORNECEDOR -->
+<rect class="box-teal" x="20" y="278" width="175" height="148" rx="8"/>
+<rect class="box-teal-h" x="20" y="278" width="175" height="28" rx="8"/>
+<rect x="20" y="292" width="175" height="14" fill="#0F6E56"/>
+<text class="th" x="107" y="298" text-anchor="middle" dominant-baseline="central">Fornecedor</text>
+<text class="ts" x="34" y="322">🔑 Id (int, PK)</text>
+<text class="ts" x="34" y="340">RazaoSocial (string, req)</text>
+<text class="ts" x="34" y="358">Cnpj (string, único)</text>
+<text class="ts" x="34" y="376">Telefone (string, req)</text>
+<text class="ts" x="34" y="394">Email / Cidade (opcional)</text>
+
+<!-- PRODUTO_FORNECEDOR -->
+<rect class="box-coral" x="60" y="510" width="200" height="128" rx="8"/>
+<rect class="box-coral-h" x="60" y="510" width="200" height="28" rx="8"/>
+<rect x="60" y="524" width="200" height="14" fill="#993C1D"/>
+<text class="th" x="160" y="530" text-anchor="middle" dominant-baseline="central">ProdutoFornecedor</text>
+<text class="ts" x="74" y="554">🔑 FK ProdutoId (Guid)</text>
+<text class="ts" x="74" y="572">🔑 FK FornecedorId (int)</text>
+<text class="ts" x="74" y="590">PrecoCusto (decimal)</text>
+<text class="ts" x="74" y="608">DataUltimaCotacao</text>
+<text class="ts" x="74" y="626">PrazoEntregaDias (opcional)</text>
+
+<!-- CLIENTE -->
+<rect class="box-blue" x="30" y="700" width="185" height="164" rx="8"/>
+<rect class="box-blue-h" x="30" y="700" width="185" height="28" rx="8"/>
+<rect x="30" y="714" width="185" height="14" fill="#185FA5"/>
+<text class="th" x="122" y="720" text-anchor="middle" dominant-baseline="central">Cliente</text>
+<text class="ts" x="44" y="744">🔑 Id (Guid, PK)</text>
+<text class="ts" x="44" y="762">Nome (string, obrigatório)</text>
+<text class="ts" x="44" y="780">CpfCnpj (string, único)</text>
+<text class="ts" x="44" y="798">Email (string, único)</text>
+<text class="ts" x="44" y="816">Telefone (string)</text>
+<text class="ts" x="44" y="834">Endereco (string, opcional)</text>
+<text class="ts" x="44" y="852">DataCadastro (datetime)</text>
+
+<!-- PEDIDO -->
+<rect class="box-blue" x="255" y="700" width="185" height="164" rx="8"/>
+<rect class="box-blue-h" x="255" y="700" width="185" height="28" rx="8"/>
+<rect x="255" y="714" width="185" height="14" fill="#185FA5"/>
+<text class="th" x="347" y="720" text-anchor="middle" dominant-baseline="central">Pedido</text>
+<text class="ts" x="269" y="744">🔑 Id (Guid, PK)</text>
+<text class="ts" x="269" y="762">NumeroPedido (string, único)</text>
+<text class="ts" x="269" y="780">DataPedido (datetime)</text>
+<text class="ts" x="269" y="798">Status (enum)</text>
+<text class="ts" x="269" y="816">ValorTotal (decimal)</text>
+<text class="ts" x="269" y="834">Observacoes (string, opcional)</text>
+<text class="ts" x="269" y="852">FK ClienteId</text>
+
+<!-- ITEM PEDIDO -->
+<rect class="box-coral" x="470" y="700" width="190" height="164" rx="8"/>
+<rect class="box-coral-h" x="470" y="700" width="190" height="28" rx="8"/>
+<rect x="470" y="714" width="190" height="14" fill="#993C1D"/>
+<text class="th" x="565" y="720" text-anchor="middle" dominant-baseline="central">ItemPedido</text>
+<text class="ts" x="484" y="744">🔑 Id (int, PK)</text>
+<text class="ts" x="484" y="762">Quantidade (int)</text>
+<text class="ts" x="484" y="780">PrecoUnitario (decimal)</text>
+<text class="ts" x="484" y="798">DescontoPercentual (decimal)</text>
+<text class="ts" x="484" y="816">FK PedidoId</text>
+<text class="ts" x="484" y="834">FK ProdutoId</text>
+
+<!-- SETAS -->
+<line class="rel-line" x1="120" y1="160" x2="120" y2="240" marker-end="url(#arrow)"/>
+<line class="rel-line" x1="120" y1="240" x2="280" y2="260" marker-end="url(#arrow)"/>
+<text class="ts" x="104" y="190" fill="#555">1</text>
+<text class="ts" x="260" y="256" fill="#555">N</text>
+
+<line class="rel-line" x1="560" y1="176" x2="560" y2="240" marker-end="url(#arrow)"/>
+<line class="rel-line" x1="560" y1="240" x2="420" y2="260" marker-end="url(#arrow)"/>
+<text class="ts" x="562" y="190" fill="#555">1</text>
+<text class="ts" x="408" y="256" fill="#555">N</text>
+
+<line class="rel-line" x1="460" y1="352" x2="490" y2="352" marker-end="url(#arrow)"/>
+<text class="ts" x="462" y="344" fill="#555">1:1</text>
+
+<line class="rel-line" x1="270" y1="470" x2="220" y2="510" marker-end="url(#arrow)"/>
+<text class="ts" x="223" y="484" fill="#555">N</text>
+
+<line class="rel-line" x1="107" y1="426" x2="130" y2="510" marker-end="url(#arrow)"/>
+<text class="ts" x="86" y="464" fill="#555">1</text>
+<text class="ts" x="132" y="508" fill="#555">N</text>
+
+<line class="rel-line" x1="215" y1="782" x2="255" y2="782" marker-end="url(#arrow)"/>
+<text class="ts" x="218" y="774" fill="#555">1</text>
+<text class="ts" x="240" y="774" fill="#555">N</text>
+
+<line class="rel-line" x1="440" y1="782" x2="470" y2="782" marker-end="url(#arrow)"/>
+<text class="ts" x="443" y="774" fill="#555">1</text>
+<text class="ts" x="455" y="774" fill="#555">N</text>
+
+<line class="rel-dash" x1="460" y1="390" x2="640" y2="390" marker-end="url(#arrow)"/>
+<line class="rel-dash" x1="640" y1="390" x2="640" y2="700"/>
+<text class="ts" x="644" y="540" fill="#555">N</text>
+
+<!-- LEGENDA -->
+<rect class="legend-box" x="30" y="918" width="620" height="50" rx="6"/>
+<text class="ts" x="44" y="938" font-weight="600">Legenda:</text>
+<text class="ts" x="120" y="938">🔑 Chave Primária (PK)</text>
+<text class="ts" x="310" y="938">FK = Chave Estrangeira</text>
+<text class="ts" x="490" y="938">req = obrigatório  opt = opcional</text>
+<text class="ts" x="44" y="958">Cardinalidades indicadas nas setas: 1, N, 1:1, N:N (via tabela associativa)</text>
+</svg>

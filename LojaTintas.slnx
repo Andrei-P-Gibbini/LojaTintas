@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="LojaTintas.API/LojaTintas.API.csproj" />
+  <Project Path="LojaTintas.Application/LojaTintas.Application.csproj" />
+  <Project Path="LojaTintas.Domain/LojaTintas.Domain.csproj" />
+  <Project Path="LojaTintas.Infrastructure/LojaTintas.Infrastructure.csproj" />
+  <Project Path="LojaTintas.Tests/LojaTintas.Tests.csproj" />
+</Solution>

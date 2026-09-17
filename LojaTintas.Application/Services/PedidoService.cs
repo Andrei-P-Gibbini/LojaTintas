@@ -1,0 +1,100 @@
+using LojaTintas.Application.DTOs.Pedidos;
+using LojaTintas.Application.Interfaces.Repositories;
+using LojaTintas.Domain.Entities;
+using LojaTintas.Domain.Exceptions;
+
+namespace LojaTintas.Application.Services;
+
+/// <summary>
+/// Orquestra a criação de pedidos: valida cliente e produtos, tira o snapshot
+/// de preço em cada item e calcula o valor total. Mantém o PedidosController
+/// enxuto, sem regra de negócio na camada HTTP.
+/// </summary>
+public class PedidoService : IPedidoService
+{
+    private readonly IPedidoRepository _pedidoRepository;
+    private readonly IClienteRepository _clienteRepository;
+    private readonly IProdutoRepository _produtoRepository;
+
+    public PedidoService(
+        IPedidoRepository pedidoRepository,
+        IClienteRepository clienteRepository,
+        IProdutoRepository produtoRepository)
+    {
+        _pedidoRepository = pedidoRepository;
+        _clienteRepository = clienteRepository;
+        _produtoRepository = produtoRepository;
+    }
+
+    public async Task<PedidoResponseDto> CriarPedidoAsync(PedidoRequestDto dto)
+    {
+        var cliente = await _clienteRepository.ObterPorIdAsync(dto.ClienteId)
+            ?? throw new ResourceNotFoundException(nameof(Cliente), dto.ClienteId);
+
+        var pedido = new Pedido
+        {
+            NumeroPedido = GerarNumeroPedido(),
+            ClienteId = cliente.Id,
+            Observacoes = dto.Observacoes
+        };
+
+        foreach (var itemDto in dto.Itens)
+        {
+            var produto = await _produtoRepository.ObterPorIdAsync(itemDto.ProdutoId)
+                ?? throw new ResourceNotFoundException(nameof(Produto), itemDto.ProdutoId);
+
+            pedido.Itens.Add(new ItemPedido
+            {
+                ProdutoId = produto.Id,
+                Quantidade = itemDto.Quantidade,
+                PrecoUnitario = produto.PrecoVenda,
+                DescontoPercentual = itemDto.DescontoPercentual
+            });
+        }
+
+        pedido.ValorTotal = pedido.Itens.Sum(i =>
+            Math.Round(i.Quantidade * i.PrecoUnitario * (1 - i.DescontoPercentual / 100), 2));
+
+        await _pedidoRepository.AdicionarAsync(pedido);
+
+        var criado = await _pedidoRepository.ObterComItensAsync(pedido.Id);
+        return MapToDto(criado!);
+    }
+
+    public async Task<PedidoResponseDto?> ObterComItensAsync(Guid id)
+    {
+        var pedido = await _pedidoRepository.ObterComItensAsync(id);
+        return pedido is null ? null : MapToDto(pedido);
+    }
+
+    public async Task<IEnumerable<PedidoResponseDto>> ObterTodosAsync()
+    {
+        // Listagem "enxuta" (sem Include) — para itens e nome do cliente, usar ObterComItensAsync.
+        var pedidos = await _pedidoRepository.ObterTodosAsync();
+        return pedidos.Select(MapToDto);
+    }
+
+    private static string GerarNumeroPedido()
+        => $"PED-{DateTime.UtcNow:yyyyMMdd}-{Guid.NewGuid().ToString("N")[..8].ToUpperInvariant()}";
+
+    private static PedidoResponseDto MapToDto(Pedido pedido) => new()
+    {
+        Id = pedido.Id,
+        NumeroPedido = pedido.NumeroPedido,
+        DataPedido = pedido.DataPedido,
+        Status = pedido.Status,
+        ValorTotal = pedido.ValorTotal,
+        Observacoes = pedido.Observacoes,
+        ClienteId = pedido.ClienteId,
+        ClienteNome = pedido.Cliente?.Nome,
+        Itens = pedido.Itens.Select(i => new ItemPedidoResponseDto
+        {
+            Id = i.Id,
+            ProdutoId = i.ProdutoId,
+            ProdutoNome = i.Produto?.Nome,
+            Quantidade = i.Quantidade,
+            PrecoUnitario = i.PrecoUnitario,
+            DescontoPercentual = i.DescontoPercentual
+        }).ToList()
+    };
+}
