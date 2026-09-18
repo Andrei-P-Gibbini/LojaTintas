@@ -5,7 +5,6 @@
 | Nome | RM |
 |------|-----|
 | Andrei de Paiva Gibbini | 563061 |
-| Diogo Cunha Abrão de Oliveira | 563654 |
 
 ---
 
