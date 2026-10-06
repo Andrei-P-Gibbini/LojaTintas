@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using LojaTintas.Application.DTOs.Clientes;
 using LojaTintas.Application.Interfaces.Repositories;
 using LojaTintas.Domain.Entities;
@@ -8,6 +9,7 @@ namespace LojaTintas.API.Controllers;
 
 /// <summary>Cadastro e consulta de clientes.</summary>
 [ApiController]
+[ApiVersionNeutral]
 [Route("api/[controller]")]
 [Produces("application/json")]
 public class ClientesController : ControllerBase

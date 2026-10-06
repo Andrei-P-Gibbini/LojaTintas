@@ -6,7 +6,9 @@ using LojaTintas.Application.Services;
 using LojaTintas.Infrastructure.Data;
 using LojaTintas.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
+using Asp.Versioning.ApiExplorer;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
+using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -29,8 +31,13 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IPedidoService, PedidoService>();
 
 builder.Services.AddControllers();
+
+builder.Services.AddLojaTintasApiVersioning();
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddLojaTintasSwagger();
+
+builder.Services.AddLojaTintasRateLimiting();
 
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
@@ -46,9 +53,16 @@ app.UseExceptionHandler();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
+    var versionProvider = app.Services.GetRequiredService<IApiVersionDescriptionProvider>();
     app.UseSwaggerUI(options =>
     {
-        options.SwaggerEndpoint("/swagger/v1/swagger.json", "LojaTintas API v1");
+        foreach (var description in versionProvider.ApiVersionDescriptions.OrderByDescending(d => d.ApiVersion))
+        {
+            var nome = description.IsDeprecated
+                ? $"LojaTintas API {description.GroupName} (deprecada)"
+                : $"LojaTintas API {description.GroupName}";
+            options.SwaggerEndpoint($"/swagger/{description.GroupName}/swagger.json", nome);
+        }
     });
 
     using var scope = app.Services.CreateScope();
@@ -57,6 +71,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseRateLimiter();
+
 app.MapControllers();
 
 // Único endpoint de health check (CP4), com relatório completo em JSON e status HTTP
@@ -70,6 +87,7 @@ app.MapHealthChecks("/health", new HealthCheckOptions
         [HealthStatus.Degraded] = StatusCodes.Status200OK,
         [HealthStatus.Unhealthy] = StatusCodes.Status503ServiceUnavailable
     }
-});
+})
+.DisableRateLimiting();
 
 app.Run();

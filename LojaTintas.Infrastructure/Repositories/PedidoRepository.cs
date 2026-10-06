@@ -1,3 +1,4 @@
+using LojaTintas.Application.DTOs.Common;
 using LojaTintas.Application.Interfaces.Repositories;
 using LojaTintas.Domain.Entities;
 using LojaTintas.Domain.Enums;
@@ -32,4 +33,23 @@ public class PedidoRepository : Repository<Pedido, Guid>, IPedidoRepository
             .Where(p => p.Status == status)
             .Include(p => p.Cliente)
             .ToListAsync();
+
+    public async Task<(IReadOnlyList<Pedido> Itens, int TotalItems)> GetPagedAsync(PaginationParams pagination)
+    {
+        var query = _dbSet.AsNoTracking();
+
+        var totalItems = await query.CountAsync();
+
+        if (pagination.Skip >= totalItems)
+            return (Array.Empty<Pedido>(), totalItems);
+
+        var itens = await query
+            .OrderByDescending(p => p.DataPedido)
+            .ThenBy(p => p.Id)
+            .Skip((int)pagination.Skip)
+            .Take(pagination.PageSize)
+            .ToListAsync();
+
+        return (itens, totalItems);
+    }
 }

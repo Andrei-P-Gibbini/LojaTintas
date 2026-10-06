@@ -1,3 +1,4 @@
+using LojaTintas.Application.DTOs.Common;
 using LojaTintas.Application.DTOs.Pedidos;
 using LojaTintas.Application.Interfaces.Repositories;
 using LojaTintas.Domain.Entities;
@@ -64,6 +65,16 @@ public class PedidoService : IPedidoService
         // Listagem "enxuta" (sem Include) — para itens e nome do cliente, usar ObterComItensAsync.
         var pedidos = await _pedidoRepository.ObterTodosAsync();
         return pedidos.Select(MapToDto);
+    }
+
+    public async Task<PagedResult<PedidoResponseDto>> ObterPaginadoAsync(int page, int pageSize)
+    {
+        var pagination = PaginationParams.Create(page, pageSize);
+
+        var (pedidos, totalItems) = await _pedidoRepository.GetPagedAsync(pagination);
+
+        var items = pedidos.Select(MapToDto).ToList();
+        return PagedResult<PedidoResponseDto>.Create(items, pagination.Page, pagination.PageSize, totalItems);
     }
 
     private static string GerarNumeroPedido()

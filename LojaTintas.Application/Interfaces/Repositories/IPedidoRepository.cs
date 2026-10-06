@@ -1,3 +1,4 @@
+using LojaTintas.Application.DTOs.Common;
 using LojaTintas.Domain.Entities;
 using LojaTintas.Domain.Enums;
 
@@ -8,4 +9,6 @@ public interface IPedidoRepository : IRepository<Pedido, Guid>
     Task<Pedido?> ObterComItensAsync(Guid pedidoId);
     Task<IEnumerable<Pedido>> ObterPorClienteAsync(Guid clienteId);
     Task<IEnumerable<Pedido>> ObterPorStatusAsync(StatusPedido status);
+
+    Task<(IReadOnlyList<Pedido> Itens, int TotalItems)> GetPagedAsync(PaginationParams pagination);
 }

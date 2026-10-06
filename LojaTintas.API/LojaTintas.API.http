@@ -53,3 +53,51 @@ Content-Type: application/json
   "clienteId": "00000000-0000-0000-0000-000000000000",
   "itens": []
 }
+
+### ===== CP5 — Versionamento, paginação e rate limit =====
+
+### Pedidos SEM versão -> cai na 2.0 (envelope paginado)
+GET {{LojaTintas.API_HostAddress}}/api/pedidos
+Accept: application/json
+
+### Pedidos v1 por query string (deprecada, array)
+GET {{LojaTintas.API_HostAddress}}/api/pedidos?api-version=1.0
+Accept: application/json
+
+### Pedidos v1 por header (deprecada, array)
+GET {{LojaTintas.API_HostAddress}}/api/pedidos
+Accept: application/json
+X-Api-Version: 1.0
+
+### Pedidos v2 explícita, página 1 de tamanho 2
+GET {{LojaTintas.API_HostAddress}}/api/pedidos?api-version=2.0&page=1&pageSize=2
+Accept: application/json
+
+### Pedidos v2, página 2 de tamanho 2 (não se sobrepõe à 1)
+GET {{LojaTintas.API_HostAddress}}/api/pedidos?page=2&pageSize=2
+Accept: application/json
+
+### 400: page inválida
+GET {{LojaTintas.API_HostAddress}}/api/pedidos?page=0
+Accept: application/json
+
+### 400: pageSize acima do teto
+GET {{LojaTintas.API_HostAddress}}/api/pedidos?pageSize=9999
+Accept: application/json
+
+### 200 com items vazio: página enorme
+GET {{LojaTintas.API_HostAddress}}/api/pedidos?page=999999
+Accept: application/json
+
+### 429: repita este POST 11x em menos de 1 minuto (limite: 10/min por IP)
+POST {{LojaTintas.API_HostAddress}}/api/pedidos
+Content-Type: application/json
+
+{
+  "clienteId": "00000000-0000-0000-0000-000000000000",
+  "itens": []
+}
+
+### Health continua 200 depois de estourar o POST
+GET {{LojaTintas.API_HostAddress}}/health
+Accept: application/json

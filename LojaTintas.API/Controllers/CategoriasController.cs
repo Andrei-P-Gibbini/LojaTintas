@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using LojaTintas.Application.DTOs.Categorias;
 using LojaTintas.Application.Interfaces.Repositories;
 using LojaTintas.Domain.Entities;
@@ -11,6 +12,7 @@ namespace LojaTintas.API.Controllers;
 /// genérico (<c>IRepository&lt;T&gt;</c>) exigido pelo CP3.
 /// </summary>
 [ApiController]
+[ApiVersionNeutral]
 [Route("api/[controller]")]
 [Produces("application/json")]
 public class CategoriasController : ControllerBase
