@@ -201,7 +201,7 @@ Os dois contratos chamam o **mesmo** `IPedidoService` (`ObterTodosAsync` para a 
 | Omitida | `GET /api/pedidos` | 200 + **envelope** (cai na 2.0) |
 | Explícita 2.0 | `GET /api/pedidos?api-version=2.0` | 200 + envelope |
 
-Toda resposta de um endpoint versionado traz `api-supported-versions: 1.0, 2.0` e `api-deprecated-versions: 1.0` (`ReportApiVersions = true`).
+Toda resposta de um endpoint versionado traz `api-supported-versions: 2.0` e `api-deprecated-versions: 1.0` (`ReportApiVersions = true`).
 
 ### URLs (API em `http://localhost:5169`)
 
