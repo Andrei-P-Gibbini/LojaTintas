@@ -54,7 +54,7 @@ public static class RateLimitingServiceExtensions
                 };
                 problemDetails.Extensions["traceId"] = httpContext.TraceIdentifier;
 
-                await httpContext.Response.WriteAsJsonAsync(problemDetails, cancellationToken);
+                await httpContext.Response.WriteAsJsonAsync(problemDetails, options: null, contentType: "application/problem+json", cancellationToken: cancellationToken);
             };
         });
 
