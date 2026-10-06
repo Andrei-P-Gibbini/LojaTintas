@@ -1,0 +1,25 @@
+  Determining projects to restore...
+C:\Users\labsfiap\Downloads\LojaTintas\LojaTintas.API\LojaTintas.API.csproj : warning NU1903: Package 'SQLitePCLRaw.lib.e_sqlite3' 2.1.11 has a known high severity vulnerability, https://github.com/advisories/GHSA-2m69-gcr7-jv3q [C:\Users\labsfiap\Downloads\LojaTintas\LojaTintas.slnx]
+C:\Users\labsfiap\Downloads\LojaTintas\LojaTintas.Infrastructure\LojaTintas.Infrastructure.csproj : warning NU1903: Package 'SQLitePCLRaw.lib.e_sqlite3' 2.1.11 has a known high severity vulnerability, https://github.com/advisories/GHSA-2m69-gcr7-jv3q [C:\Users\labsfiap\Downloads\LojaTintas\LojaTintas.slnx]
+C:\Users\labsfiap\Downloads\LojaTintas\LojaTintas.Tests\LojaTintas.Tests.csproj : warning NU1903: Package 'SQLitePCLRaw.lib.e_sqlite3' 2.1.11 has a known high severity vulnerability, https://github.com/advisories/GHSA-2m69-gcr7-jv3q [C:\Users\labsfiap\Downloads\LojaTintas\LojaTintas.slnx]
+  All projects are up-to-date for restore.
+C:\Users\labsfiap\Downloads\LojaTintas\LojaTintas.Tests\LojaTintas.Tests.csproj : warning NU1903: Package 'SQLitePCLRaw.lib.e_sqlite3' 2.1.11 has a known high severity vulnerability, https://github.com/advisories/GHSA-2m69-gcr7-jv3q
+C:\Users\labsfiap\Downloads\LojaTintas\LojaTintas.Infrastructure\LojaTintas.Infrastructure.csproj : warning NU1903: Package 'SQLitePCLRaw.lib.e_sqlite3' 2.1.11 has a known high severity vulnerability, https://github.com/advisories/GHSA-2m69-gcr7-jv3q
+  LojaTintas.Domain -> C:\Users\labsfiap\Downloads\LojaTintas\LojaTintas.Domain\bin\Debug\net10.0\LojaTintas.Domain.dll
+  LojaTintas.Application -> C:\Users\labsfiap\Downloads\LojaTintas\LojaTintas.Application\bin\Debug\net10.0\LojaTintas.Application.dll
+  LojaTintas.Infrastructure -> C:\Users\labsfiap\Downloads\LojaTintas\LojaTintas.Infrastructure\bin\Debug\net10.0\LojaTintas.Infrastructure.dll
+  LojaTintas.Domain.Tests -> C:\Users\labsfiap\Downloads\LojaTintas\LojaTintas.Domain.Tests\bin\Debug\net10.0\LojaTintas.Domain.Tests.dll
+Test run for C:\Users\labsfiap\Downloads\LojaTintas\LojaTintas.Domain.Tests\bin\Debug\net10.0\LojaTintas.Domain.Tests.dll (.NETCoreApp,Version=v10.0)
+  LojaTintas.Tests -> C:\Users\labsfiap\Downloads\LojaTintas\LojaTintas.Tests\bin\Debug\net10.0\LojaTintas.Tests.dll
+  LojaTintas.Application.Tests -> C:\Users\labsfiap\Downloads\LojaTintas\LojaTintas.Application.Tests\bin\Debug\net10.0\LojaTintas.Application.Tests.dll
+Test run for C:\Users\labsfiap\Downloads\LojaTintas\LojaTintas.Tests\bin\Debug\net10.0\LojaTintas.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+Test run for C:\Users\labsfiap\Downloads\LojaTintas\LojaTintas.Application.Tests\bin\Debug\net10.0\LojaTintas.Application.Tests.dll (.NETCoreApp,Version=v10.0)
+A total of 1 test files matched the specified pattern.
+A total of 1 test files matched the specified pattern.
+
+Passed!  - Failed:     0, Passed:     7, Skipped:     0, Total:     7, Duration: 9 ms - LojaTintas.Domain.Tests.dll (net10.0)
+
+Passed!  - Failed:     0, Passed:    22, Skipped:     0, Total:    22, Duration: 67 ms - LojaTintas.Application.Tests.dll (net10.0)
+
+Passed!  - Failed:     0, Passed:     1, Skipped:     0, Total:     1, Duration: 547 ms - LojaTintas.Tests.dll (net10.0)

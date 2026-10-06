@@ -1,0 +1,37 @@
+HTTP/1.1 200 OK
+Content-Type: application/json
+Date: Tue, 06 Oct 2026 11:20:59 GMT
+Server: Kestrel
+Cache-Control: no-store, no-cache
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Pragma: no-cache
+Transfer-Encoding: chunked
+
+{
+  "status": "Healthy",
+  "totalDurationMs": 818.95,
+  "traceId": "0HNP3JFA3PG1Q:00000001",
+  "checks": [
+    {
+      "name": "self",
+      "status": "Healthy",
+      "durationMs": 1,
+      "description": "API em execu\u00E7\u00E3o.",
+      "error": null
+    },
+    {
+      "name": "database",
+      "status": "Healthy",
+      "durationMs": 10.05,
+      "description": null,
+      "error": null
+    },
+    {
+      "name": "fiap-website",
+      "status": "Healthy",
+      "durationMs": 809.7,
+      "description": "FIAP respondeu 200.",
+      "error": null
+    }
+  ]
+}
